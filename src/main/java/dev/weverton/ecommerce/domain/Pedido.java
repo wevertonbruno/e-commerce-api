@@ -7,7 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "pedido")
@@ -30,6 +32,9 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "endereco_entrega_id")
     private Endereco enderecoEntrega;
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido(Long id, Date instante, Cliente cliente, Endereco enderecoEntrega) {
         this.id = id;

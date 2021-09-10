@@ -1,17 +1,8 @@
 package dev.weverton.ecommerce.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -36,10 +27,19 @@ public class Produto {
     @JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemPedido> itens = new HashSet<>();
+
     public Produto(Long id, String nome, Double valor) {
         this.id = id;
         this.nome = nome;
         this.valor = valor;
+    }
+
+    public List<Pedido> getPedidos(){
+        List<Pedido> lista = new ArrayList<>();
+        itens.forEach((i) -> lista.add(i.getPedido()));
+        return lista;
     }
 
     @Override
