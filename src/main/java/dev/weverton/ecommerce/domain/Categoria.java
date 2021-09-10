@@ -27,10 +27,6 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)

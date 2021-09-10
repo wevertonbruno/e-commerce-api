@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "produto")
-@Data
 @NoArgsConstructor
 @Getter
 @Setter
@@ -31,6 +31,7 @@ public class Produto {
     private String nome;
     private Double valor;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
@@ -39,10 +40,6 @@ public class Produto {
         this.id = id;
         this.nome = nome;
         this.valor = valor;
-    }
-
-    public List<Categoria> getCategorias() {
-        return categorias;
     }
 
     @Override
