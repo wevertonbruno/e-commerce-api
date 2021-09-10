@@ -1,5 +1,6 @@
 package dev.weverton.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 public class ItemPedido {
+    @JsonIgnore
     @EmbeddedId
     private ItemPedidoPK id = new ItemPedidoPK();
 
@@ -30,7 +32,9 @@ public class ItemPedido {
         this.preco = preco;
     }
 
+    @JsonIgnore
     public Pedido getPedido(){ return id.getPedido(); }
+
     public Produto getProduto(){ return id.getProduto(); }
 
     @Override

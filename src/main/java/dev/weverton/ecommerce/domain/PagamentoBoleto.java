@@ -1,5 +1,6 @@
 package dev.weverton.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.weverton.ecommerce.domain.enums.PagamentoStatus;
 
 import javax.persistence.Entity;
@@ -7,7 +8,10 @@ import java.util.Date;
 
 @Entity
 public class PagamentoBoleto extends Pagamento{
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataPagamento;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataVencimento;
 
     public PagamentoBoleto(){}

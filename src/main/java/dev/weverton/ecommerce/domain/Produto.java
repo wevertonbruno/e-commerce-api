@@ -27,6 +27,7 @@ public class Produto {
     @JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
 
@@ -36,6 +37,7 @@ public class Produto {
         this.valor = valor;
     }
 
+    @JsonIgnore //Como a func tem prefixo get, ela é automaticamente serializada e cai ref ciclica.
     public List<Pedido> getPedidos(){
         List<Pedido> lista = new ArrayList<>();
         itens.forEach((i) -> lista.add(i.getPedido()));

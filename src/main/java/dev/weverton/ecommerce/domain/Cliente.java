@@ -1,5 +1,6 @@
 package dev.weverton.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.weverton.ecommerce.domain.enums.TipoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Cliente {
     @CollectionTable(name = "telefone")
     private Set<String> telefones = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 

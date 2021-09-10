@@ -1,5 +1,6 @@
 package dev.weverton.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.weverton.ecommerce.domain.enums.PagamentoStatus;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public abstract class Pagamento {
 
     private Integer status;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId //Anotacao para mapear o Id
