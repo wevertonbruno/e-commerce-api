@@ -2,6 +2,9 @@ package dev.weverton.ecommerce.domain;
 
 import dev.weverton.ecommerce.domain.enums.PagamentoStatus;
 
+import javax.persistence.Entity;
+
+@Entity
 public class PagamentoCartao extends Pagamento{
     private Integer parcelas;
 

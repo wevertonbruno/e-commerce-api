@@ -1,9 +1,11 @@
 package dev.weverton.ecommerce;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
 import dev.weverton.ecommerce.domain.*;
+import dev.weverton.ecommerce.domain.enums.PagamentoStatus;
 import dev.weverton.ecommerce.domain.enums.TipoCliente;
 import dev.weverton.ecommerce.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,12 @@ public class ECommerceApplication implements CommandLineRunner {
 	@Autowired
 	EnderecoRepository enderecoRepository;
 
+	@Autowired
+	PedidoRepository pedidoRepository;
+
+	@Autowired
+	PagamentoRepository pagamentoRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(ECommerceApplication.class, args);
 	}
@@ -44,6 +52,7 @@ public class ECommerceApplication implements CommandLineRunner {
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
 		Produto p3 = new Produto(null, "Mouse", 80.00);
+
 
 		c1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		c2.getProdutos().addAll(Arrays.asList(p2));
@@ -83,6 +92,21 @@ public class ECommerceApplication implements CommandLineRunner {
 
 		clienteRepository.save(cliente1);
 		enderecoRepository.saveAll(Arrays.asList(end1, end2));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("30/08/2021 16:30"), cliente1, end1);
+		Pedido ped2 = new Pedido(null, sdf.parse("30/08/2021 17:30"), cliente1, end2);
+
+		Pagamento pag1 = new PagamentoCartao(null, PagamentoStatus.QUITADO, ped1, 6);
+		ped1.setPagamento(pag1);
+
+		Pagamento pag2 = new PagamentoBoleto(null, PagamentoStatus.PENDENTE, ped2, sdf.parse("09/09/2020 10:00"), null);
+		ped2.setPagamento(pag2);
+
+		cliente1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
 	}
 
 }

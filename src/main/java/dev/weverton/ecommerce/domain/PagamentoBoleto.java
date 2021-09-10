@@ -2,8 +2,10 @@ package dev.weverton.ecommerce.domain;
 
 import dev.weverton.ecommerce.domain.enums.PagamentoStatus;
 
+import javax.persistence.Entity;
 import java.util.Date;
 
+@Entity
 public class PagamentoBoleto extends Pagamento{
     private Date dataPagamento;
     private Date dataVencimento;

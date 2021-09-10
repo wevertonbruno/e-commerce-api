@@ -5,22 +5,38 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "pedido")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Pedido {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date instante;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
     private Pagamento pagamento;
 
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "endereco_entrega_id")
     private Endereco enderecoEntrega;
+
+    public Pedido(Long id, Date instante, Cliente cliente, Endereco enderecoEntrega) {
+        this.id = id;
+        this.instante = instante;
+        this.cliente = cliente;
+        this.enderecoEntrega = enderecoEntrega;
+    }
 
     @Override
     public boolean equals(Object o) {
