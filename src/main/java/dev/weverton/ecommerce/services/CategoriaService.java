@@ -16,9 +16,14 @@ public class CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Categoria buscar(Long id){
+    public Categoria find(Long id){
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         return categoria.orElseThrow(
                 () -> new EntityNotFoundException("Categoria(" + id +") não encontrada"));
+   }
+
+   public Categoria store(Categoria categoriaObj){
+        categoriaObj.setId(null);
+        return categoriaRepository.save(categoriaObj);
    }
 }

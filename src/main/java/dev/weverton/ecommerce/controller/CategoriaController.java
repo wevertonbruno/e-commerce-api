@@ -21,8 +21,16 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscar(@PathVariable Long id){
-        Categoria categoria = categoriaService.buscar(id);
+    public ResponseEntity<Categoria> find(@PathVariable Long id){
+        Categoria categoria = categoriaService.find(id);
         return ResponseEntity.ok().body(categoria);
+    }
+
+    @PostMapping
+    public ResponseEntity<Categoria> store(@RequestBody Categoria categoriaObj){
+        Categoria categoria = categoriaService.store(categoriaObj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(categoria);
     }
 }
