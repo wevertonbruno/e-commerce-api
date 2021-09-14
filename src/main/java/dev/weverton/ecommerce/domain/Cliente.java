@@ -19,12 +19,14 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Column(unique = true)
     private String email;
     private String documento;
 
     private Integer tipo;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL )
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection
@@ -40,7 +42,7 @@ public class Cliente {
         this.nome = nome;
         this.email = email;
         this.documento = documento;
-        this.tipo = tipo.getCod();
+        this.tipo = tipo == null ? null : tipo.getCod();
     }
 
     public List<Pedido> getPedidos() {

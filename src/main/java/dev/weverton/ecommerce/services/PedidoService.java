@@ -16,7 +16,7 @@ public class PedidoService {
         this.pedidoRepository = pedidoRepository;
     }
 
-    public Pedido buscar(Long id){
+    public Pedido find(Long id){
         Optional<Pedido> pedido = pedidoRepository.findById(id);
         return pedido.orElseThrow(
                 () -> new EntityNotFoundException("Pedido(" + id +") não encontrado"));

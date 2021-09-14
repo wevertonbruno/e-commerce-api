@@ -1,11 +1,16 @@
 package dev.weverton.ecommerce.services;
 
 import dev.weverton.ecommerce.domain.Categoria;
+import dev.weverton.ecommerce.dto.CategoriaDTO;
+import dev.weverton.ecommerce.exceptions.DataIntegrityException;
 import dev.weverton.ecommerce.repositories.CategoriaRepository;
 import dev.weverton.ecommerce.exceptions.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaService {
@@ -14,6 +19,12 @@ public class CategoriaService {
 
     public CategoriaService(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
+    }
+
+    public List<CategoriaDTO> findAll(){
+        List<Categoria> listaCategorias = categoriaRepository.findAll();
+        List<CategoriaDTO> categorias = listaCategorias.stream().map( obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+        return categorias;
     }
 
     public Categoria find(Long id){
@@ -25,5 +36,20 @@ public class CategoriaService {
    public Categoria store(Categoria categoriaObj){
         categoriaObj.setId(null);
         return categoriaRepository.save(categoriaObj);
+   }
+
+   public Categoria update(Categoria categoriaObj){
+        Categoria categoria = find(categoriaObj.getId());
+        categoria.setNome(categoriaObj.getNome());
+        return categoriaRepository.save(categoriaObj);
+   }
+
+   public void delete(Long id){
+        find(id);
+        try{
+            categoriaRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityException("Não é possível deletar categorias que possui produtos.");
+        }
    }
 }
