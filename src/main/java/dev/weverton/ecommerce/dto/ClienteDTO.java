@@ -1,13 +1,14 @@
 package dev.weverton.ecommerce.dto;
 
-import dev.weverton.ecommerce.domain.Categoria;
+
 import dev.weverton.ecommerce.domain.Cliente;
+import dev.weverton.ecommerce.services.validation.ClienteUpdateValidation;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 
+@ClienteUpdateValidation
 public class ClienteDTO implements BaseDTO<Cliente> {
     private Long id;
 

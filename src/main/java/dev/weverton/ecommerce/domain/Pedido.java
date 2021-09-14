@@ -43,6 +43,15 @@ public class Pedido {
         this.enderecoEntrega = enderecoEntrega;
     }
 
+    public Double getValorTotal(){
+        Double total = 0.0;
+        for(ItemPedido item: itens){
+            total += item.getSubTotal();
+        }
+
+        return total;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

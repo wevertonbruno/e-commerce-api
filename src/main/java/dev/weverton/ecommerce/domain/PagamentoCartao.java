@@ -1,10 +1,12 @@
 package dev.weverton.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import dev.weverton.ecommerce.domain.enums.PagamentoStatus;
 
 import javax.persistence.Entity;
 
 @Entity
+@JsonTypeName("PAGAMENTO_CARTAO")
 public class PagamentoCartao extends Pagamento{
     private Integer parcelas;
 

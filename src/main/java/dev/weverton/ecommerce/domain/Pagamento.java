@@ -1,6 +1,7 @@
 package dev.weverton.ecommerce.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import dev.weverton.ecommerce.domain.enums.PagamentoStatus;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "pagamento")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento {
     @Id //Relacionamento 1 para 1 com Pedido, nesse caso o id será o mesmo no pedido
     private Long id;

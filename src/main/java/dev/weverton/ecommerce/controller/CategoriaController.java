@@ -3,6 +3,7 @@ package dev.weverton.ecommerce.controller;
 import dev.weverton.ecommerce.domain.Categoria;
 import dev.weverton.ecommerce.dto.CategoriaDTO;
 import dev.weverton.ecommerce.services.CategoriaService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -52,6 +53,18 @@ public class CategoriaController {
     public ResponseEntity<Void> delete(@PathVariable Long id){
         categoriaService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<CategoriaDTO>> search(
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(value = "rows", defaultValue = "24", required = false) Integer rows,
+            @RequestParam(value = "orderBy", defaultValue = "nome", required = false) String orderBy,
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false) String direction
+    ){
+        Page<Categoria> pageListRaw = categoriaService.search(page, rows, orderBy, direction);
+        Page<CategoriaDTO> pageList = pageListRaw.map(obj -> new CategoriaDTO(obj));
+        return ResponseEntity.ok().body(pageList);
     }
 
 }
