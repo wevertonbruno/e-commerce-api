@@ -53,6 +53,22 @@ public class Pedido {
     }
 
     @Override
+    public String toString() {
+        String str = "Pedido nº: " + getId() +
+                ", Instante: " + getInstante() +
+                ", Cliente: " + getCliente().getNome() +
+                ", Situação: " + getPagamento().getStatus().getDescricao() +
+                ", Detalhes: {";
+
+        for(ItemPedido i: getItens()){
+            str += i.toString();
+        }
+
+        str += "}, Valor total: " + getValorTotal();
+        return str;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

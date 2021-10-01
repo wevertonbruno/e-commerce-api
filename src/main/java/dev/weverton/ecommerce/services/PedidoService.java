@@ -24,11 +24,15 @@ public class PedidoService {
 
     private BoletoService boletoService;
     private ProdutoService produtoService;
+    private ClienteService clienteService;
+    private EmailService emailService;
 
     public PedidoService(
             PedidoRepository pedidoRepository,
             BoletoService boletoService,
             ProdutoService produtoService,
+            ClienteService clienteService,
+            EmailService emailService,
             ItemPedidoRepository itemPedidoRepository,
             PagamentoRepository pagamentoRepository
     ) {
@@ -37,6 +41,8 @@ public class PedidoService {
         this.produtoService = produtoService;
         this.itemPedidoRepository = itemPedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
+        this.clienteService = clienteService;
+        this.emailService = emailService;
     }
 
     public Pedido find(Long id){
@@ -47,18 +53,16 @@ public class PedidoService {
 
    @Transactional
    public Pedido store(Pedido pedidoObj){
-        System.out.println(pedidoObj.getItens().toString());
         pedidoObj.setId(null);
         pedidoObj.setInstante(new Date());
         pedidoObj.getPagamento().setStatus(PagamentoStatus.PENDENTE);
         pedidoObj.getPagamento().setPedido(pedidoObj);
+        pedidoObj.setCliente(clienteService.find(pedidoObj.getCliente().getId()));
 
         if(pedidoObj.getPagamento() instanceof PagamentoBoleto){
             PagamentoBoleto pagto = (PagamentoBoleto) pedidoObj.getPagamento();
             boletoService.setPagamento(pagto, pedidoObj.getInstante());
         }
-
-
 
         pedidoObj = pedidoRepository.save(pedidoObj);
         pagamentoRepository.save(pedidoObj.getPagamento());
@@ -71,6 +75,8 @@ public class PedidoService {
         }
 
         itemPedidoRepository.saveAll(pedidoObj.getItens());
+        emailService.sendOrderConfirmationEmail(pedidoObj);
+        
         return pedidoObj;
    }
 }
