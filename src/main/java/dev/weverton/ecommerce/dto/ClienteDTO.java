@@ -60,6 +60,6 @@ public class ClienteDTO implements BaseDTO<Cliente> {
     }
 
     public Cliente toEntity() {
-        return new Cliente(id, nome, email, null, null);
+        return new Cliente(id, nome, email, null, null, null);
     }
 }

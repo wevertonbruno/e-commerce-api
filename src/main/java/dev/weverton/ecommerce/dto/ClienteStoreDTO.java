@@ -6,6 +6,8 @@ import dev.weverton.ecommerce.domain.Endereco;
 import dev.weverton.ecommerce.domain.enums.TipoCliente;
 import dev.weverton.ecommerce.services.validation.ClienteStoreValidation;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -14,6 +16,9 @@ import java.util.List;
 
 @ClienteStoreValidation
 public class ClienteStoreDTO implements BaseDTO<Cliente> {
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @NotEmpty(message = "Preenchimento obrigatório")
     @Length(min = 3, max = 150, message = "O tamanho deve ser entre 3 e 150 caracteres")
@@ -25,6 +30,9 @@ public class ClienteStoreDTO implements BaseDTO<Cliente> {
 
     @NotEmpty(message = "Preenchimento obrigatório")
     private String documento;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    private String senha;
 
     private Integer tipo;
 
@@ -49,7 +57,7 @@ public class ClienteStoreDTO implements BaseDTO<Cliente> {
 
     public ClienteStoreDTO(String nome, String email, String documento, Integer tipo, String logradouro,
                            String numero, String complemento, String bairro, String cep,
-                           List<String> telefones, Integer cidadeId) {
+                           List<String> telefones, Integer cidadeId, String senha) {
         this.nome = nome;
         this.email = email;
         this.documento = documento;
@@ -61,6 +69,7 @@ public class ClienteStoreDTO implements BaseDTO<Cliente> {
         this.cep = cep;
         this.telefones = telefones;
         this.cidadeId = cidadeId;
+        this.senha = senha;
     }
 
     public String getNome() {
@@ -154,7 +163,7 @@ public class ClienteStoreDTO implements BaseDTO<Cliente> {
 
     @Override
     public Cliente toEntity() {
-        Cliente cliente = new Cliente(null, nome, email, documento, TipoCliente.toEnum(tipo));
+        Cliente cliente = new Cliente(null, nome, email, documento, TipoCliente.toEnum(tipo), encoder.encode(senha));
         Cidade cidade = new Cidade(cidadeId, null, null);
         Endereco endereco = new Endereco(null, logradouro, numero, complemento, bairro, cep, cliente, cidade);
 

@@ -24,6 +24,9 @@ public class Cliente {
     private String email;
     private String documento;
 
+    @JsonIgnore
+    private String senha;
+
     private Integer tipo;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL )
@@ -37,12 +40,13 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
-    public Cliente(Long id, String nome, String email, String documento, TipoCliente tipo) {
+    public Cliente(Long id, String nome, String email, String documento, TipoCliente tipo, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.documento = documento;
         this.tipo = tipo == null ? null : tipo.getCod();
+        this.senha = senha;
     }
 
     public List<Pedido> getPedidos() {
