@@ -2,6 +2,7 @@ package dev.weverton.ecommerce.config;
 
 import dev.weverton.ecommerce.security.JWT;
 import dev.weverton.ecommerce.security.JWTAuthFilter;
+import dev.weverton.ecommerce.security.JWTAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,7 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
 
+        //filtros de authenticação e authorizacao
         http.addFilter(new JWTAuthFilter(authenticationManager(), jwt));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwt, userDetailsService));
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
