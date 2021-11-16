@@ -8,6 +8,7 @@ import dev.weverton.ecommerce.dto.ClienteDTO;
 import dev.weverton.ecommerce.dto.ClienteStoreDTO;
 import dev.weverton.ecommerce.services.ClienteService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,6 +27,7 @@ public class ClienteController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> findAll(){
         List<ClienteDTO> clientes = clienteService.findAll();
@@ -53,6 +55,7 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         clienteService.delete(id);

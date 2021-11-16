@@ -5,6 +5,7 @@ import dev.weverton.ecommerce.dto.CategoriaDTO;
 import dev.weverton.ecommerce.services.CategoriaService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,6 +35,7 @@ public class CategoriaController {
         return ResponseEntity.ok().body(categoria);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Void> store(@Valid @RequestBody CategoriaDTO categoriaDTO){
         Categoria categoria = categoriaService.store(categoriaDTO.toEntity());
@@ -42,6 +44,7 @@ public class CategoriaController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO categoriaDTO, @PathVariable Long id){
         categoriaDTO.setId(id);
@@ -49,6 +52,7 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         categoriaService.delete(id);

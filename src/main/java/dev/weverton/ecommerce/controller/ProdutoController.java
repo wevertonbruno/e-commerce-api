@@ -1,9 +1,7 @@
 package dev.weverton.ecommerce.controller;
 
 import dev.weverton.ecommerce.controller.utils.URL;
-import dev.weverton.ecommerce.domain.Categoria;
 import dev.weverton.ecommerce.domain.Produto;
-import dev.weverton.ecommerce.dto.CategoriaDTO;
 import dev.weverton.ecommerce.dto.ProdutoDTO;
 import dev.weverton.ecommerce.services.ProdutoService;
 import org.springframework.data.domain.Page;
